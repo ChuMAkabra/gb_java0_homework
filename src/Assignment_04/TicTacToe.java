@@ -21,7 +21,7 @@
  * 13. повторение п.6-12
  */
 
-package lesson4;
+package Assignment_04;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -177,12 +177,12 @@ public class TicTacToe {
         if (map[1][0] == symbol && map[1][1] == symbol && map[1][2] == symbol) return true;
         if (map[2][0] == symbol && map[2][1] == symbol && map[2][2] == symbol) return true;
 
-        if (map[0][0] == symbol && map[2][0] == symbol && map[2][0] == symbol) return true;
+        if (map[0][0] == symbol && map[1][0] == symbol && map[2][0] == symbol) return true;
         if (map[0][1] == symbol && map[1][1] == symbol && map[2][1] == symbol) return true;
         if (map[0][2] == symbol && map[1][2] == symbol && map[2][2] == symbol) return true;
 
-        if (map[0][2] == symbol && map[1][1] == symbol && map[2][2] == symbol) return true;
-        if (map[0][2] == symbol && map[1][1] == symbol && map[0][2] == symbol) return true;
+        if (map[0][0] == symbol && map[1][1] == symbol && map[2][2] == symbol) return true;
+        if (map[0][2] == symbol && map[1][1] == symbol && map[2][0] == symbol) return true;
         return false;
     }
 
