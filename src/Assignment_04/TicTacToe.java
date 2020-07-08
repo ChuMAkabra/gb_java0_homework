@@ -28,8 +28,8 @@ import java.util.Scanner;
 
 public class TicTacToe {
 
-    public static final int SIZE = 3;
-    public static final int DOTS_TO_WIN = 3;
+    public static final int SIZE = 5;
+    public static final int DOTS_TO_WIN = 4;
 
     public static final char DOT_EMPTY = '•';
     public static final char DOT_HUMAN = 'X';
@@ -173,18 +173,164 @@ public class TicTacToe {
     }
 
     private static boolean checkWin(char symbol) {
-        if (map[0][0] == symbol && map[0][1] == symbol && map[0][2] == symbol) return true;
-        if (map[1][0] == symbol && map[1][1] == symbol && map[1][2] == symbol) return true;
-        if (map[2][0] == symbol && map[2][1] == symbol && map[2][2] == symbol) return true;
+        // check horizontal
+//        if (map[i][0] == symbol && map[i][1] == symbol && map[i][2] == symbol) return true;
+        int dotsInLine = 0;
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                dotsInLine = (map[i][j] == symbol) ? ++dotsInLine : 0;
+                if (dotsInLine == DOTS_TO_WIN) return true;
 
-        if (map[0][0] == symbol && map[1][0] == symbol && map[2][0] == symbol) return true;
-        if (map[0][1] == symbol && map[1][1] == symbol && map[2][1] == symbol) return true;
-        if (map[0][2] == symbol && map[1][2] == symbol && map[2][2] == symbol) return true;
+                int dotsToCheck = SIZE - (j + 1);
+                if (DOTS_TO_WIN > dotsInLine + dotsToCheck) break;
+            }
+        }
 
-        if (map[0][0] == symbol && map[1][1] == symbol && map[2][2] == symbol) return true;
-        if (map[0][2] == symbol && map[1][1] == symbol && map[2][0] == symbol) return true;
+        // check vertical
+//        if (map[0][i] == symbol && map[1][i] == symbol && map[2][i] == symbol) return true;
+        dotsInLine = 0;
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                dotsInLine = (map[j][i] == symbol) ? ++dotsInLine : 0;
+                if (dotsInLine == DOTS_TO_WIN) return true;
+
+                int dotsToCheck = SIZE - (j + 1);
+                if (DOTS_TO_WIN > dotsInLine + dotsToCheck) break;
+            }
+        }
+
+        // check diagonal 1
+        int shift = SIZE - DOTS_TO_WIN;
+        for (int s = -shift; s <= shift; s++) {
+            for (int d = 0; d < SIZE; d++) {
+                if (d + s < 0) continue;
+
+                dotsInLine = (map[d][d + s] == symbol) ? ++dotsInLine : 0;
+                if (dotsInLine == DOTS_TO_WIN) return true;
+
+                int dotsToCheck = SIZE - (d + 1);
+                if (DOTS_TO_WIN > dotsInLine + dotsToCheck) break;
+            }
+        }
+
+        // check diagonal 2
+        for (int s = shift; s >= -shift; s--) {
+            for (int d = SIZE - 1; d >= 0; d--) {
+                if ((SIZE - 1) - d + s < 0) continue;
+
+                dotsInLine = (map[d][(SIZE - 1) - d + s] == symbol) ? ++dotsInLine : 0;
+                if (dotsInLine == DOTS_TO_WIN) return true;
+
+                int dotsToCheck = d;
+                if (DOTS_TO_WIN > dotsInLine + dotsToCheck) break;
+            }
+        }
+
+
+        // check diagonal 1
+//        if (map[0][0] == symbol && map[1][1] == symbol && map[2][2] == symbol) return true;
+//        dotsInLine = 0;
+//        for (int i = 0; i < SIZE; i++) {
+//            for (int j = 0; j < SIZE-DOTS_TO_WIN; j++) {
+//                for (int k = 0; k < SIZE; k++) {
+//                    dotsInLine = (map[i][i + j] == symbol) ? ++dotsInLine : 0;
+//                    if (dotsInLine == DOTS_TO_WIN) return true;
+//
+//                    int dotsToCheck = SIZE - (i + 1);
+//                    if (DOTS_TO_WIN > dotsInLine + dotsToCheck) break;
+//                }
+//            }
+//        }
+
+        // check diagonal 2
+//        dotsInLine = 0;
+////        if (map[0][2] == symbol && map[1][1] == symbol && map[2][0] == symbol) return true;
+//        for (int i = 0; i < SIZE; i++) {
+//            for (int j = (SIZE-1) - i; j >= 0; j--) {
+//                dotsInLine = (map[i][j] == symbol) ? ++dotsInLine : 0;
+//                if (dotsInLine == DOTS_TO_WIN) return true;
+//
+//                int dotsToCheck = SIZE - (i + 1);
+//                if (DOTS_TO_WIN > dotsInLine + dotsToCheck) break;
+//            }
+//        }
+
+        /**
+         * new diagonals 1
+         */
+//        dotsInLine = 0;
+//        for (int i = 0; i < SIZE; i++) {
+//            dotsInLine = (map[i][i + 1] == symbol) ? ++dotsInLine : 0;
+//            if (dotsInLine == DOTS_TO_WIN) return true;
+//
+//            int dotsToCheck = SIZE - (i + 1);
+//            if (DOTS_TO_WIN > dotsInLine + dotsToCheck) break;
+//        }
+//
+//        dotsInLine = 0;
+//        for (int i = 0; i < SIZE; i++) {
+//            dotsInLine = (map[i + 1][i] == symbol) ? ++dotsInLine : 0;
+//            if (dotsInLine == DOTS_TO_WIN) return true;
+//
+//            int dotsToCheck = SIZE - (i + 1);
+//            if (DOTS_TO_WIN > dotsInLine + dotsToCheck) break;
+//        }
+
+        /**
+         * new diagonals 2
+         */
+
+//        dotsInLine = 0;
+////        if (map[0][2] == symbol && map[1][1] == symbol && map[2][0] == symbol) return true;
+//        for (int i = 0; i < SIZE - 1; i++) {
+//            dotsInLine = (map[i][(SIZE - 1) - i - 1] == symbol) ? ++dotsInLine : 0;
+//            if (dotsInLine == DOTS_TO_WIN) return true;
+//
+//            int dotsToCheck = SIZE - (i + 1);
+//            if (DOTS_TO_WIN > dotsInLine + dotsToCheck) break;
+//        }
+//
+//        dotsInLine = 0;
+////        if (map[0][2] == symbol && map[1][1] == symbol && map[2][0] == symbol) return true;
+//        for (int i = 0; i < SIZE; i++) {
+//            dotsInLine = (map[(SIZE - 1) - i][i] == symbol) ? ++dotsInLine : 0;
+//            if (dotsInLine == DOTS_TO_WIN) return true;
+//
+//            int dotsToCheck = SIZE - (i + 1);
+//            if (DOTS_TO_WIN > dotsInLine + dotsToCheck) break;
+//        }
+
         return false;
+//        if (map[0][0] == symbol && map[0][1] == symbol && map[0][2] == symbol) return true;
+//        if (map[1][0] == symbol && map[1][1] == symbol && map[1][2] == symbol) return true;
+//        if (map[2][0] == symbol && map[2][1] == symbol && map[2][2] == symbol) return true;
+
+
+//        if (map[0][0] == symbol && map[1][0] == symbol && map[2][0] == symbol) return true;
+//        if (map[0][1] == symbol && map[1][1] == symbol && map[2][1] == symbol) return true;
+//        if (map[0][2] == symbol && map[1][2] == symbol && map[2][2] == symbol) return true;
+
+//        if (map[0][0] == symbol && map[1][1] == symbol && map[2][2] == symbol) return true;
+//        if (map[0][2] == symbol && map[1][1] == symbol && map[2][0] == symbol) return true;
     }
+
+//    private static int checkStep(char symbol, int shift) {
+//        int dotsInLine = 0;
+//        int start = Math.max(shift, 0);
+//        int end = Math.min(SIZE, SIZE + shift);
+//        if (end - start + 1 < DOTS_TO_WIN) return 0;
+//
+//        for (int i = start; i < end; i++) {
+//            for (int j = i; j < SIZE; j++) {
+//            dotsInLine = (map[i][j] == symbol) ? ++dotsInLine : 0;
+//            if (dotsInLine == DOTS_TO_WIN) break;
+//
+//            int dotsToCheck = SIZE - (j + 1);
+//            if (DOTS_TO_WIN > dotsInLine + dotsToCheck) break;
+//            }
+//        }
+//        return dotsInLine;
+//    }
 
     private static boolean isMapFull() {
         for (char[] chars : map) {
