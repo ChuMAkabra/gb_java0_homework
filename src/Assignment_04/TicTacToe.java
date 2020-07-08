@@ -202,7 +202,7 @@ public class TicTacToe {
     private static boolean checkWin(char symbol) {
         if (checkHorizontal(symbol)) return true;
         if (checkVertical(symbol)) return true;
-        if (CheckDescendingDiagonal(symbol)) return true;
+        if (checkDescendingDiagonal(symbol)) return true;
         return checkAscendingDiagonal(symbol);
     }
 
@@ -234,7 +234,7 @@ public class TicTacToe {
         return false;
     }
 
-    private static boolean CheckDescendingDiagonal(char symbol) {
+    private static boolean checkDescendingDiagonal(char symbol) {
         int dotsInLine = 0;
         for (int s = -diagonalShift; s <= diagonalShift; s++) {
             for (int d = 0; d < SIZE; d++) {
