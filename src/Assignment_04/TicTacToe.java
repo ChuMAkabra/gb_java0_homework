@@ -37,8 +37,6 @@ public class TicTacToe {
     public static final char DOT_AI = 'O';
     public static final String EMPTY = " ";
     public static final String FIRST_EMPTY_CHAR = "  ";
-    // достаточно проверять только диагонали, вмещающие победное кол-во полей. Число таких
-    // диагоналей как слева, так и справа от основной диагонали определим как максимальный "сдвиг":
     public static int diagonalShift; // модуль максимального сдвига
 
     public static char[][] map = new char[SIZE][SIZE];
@@ -129,6 +127,8 @@ public class TicTacToe {
     }
 
     public static void defineDiagonalShift() {
+        // достаточно проверять только диагонали, вмещающие победное кол-во полей. Число таких
+        // диагоналей как слева, так и справа от основной диагонали определим как "сдвиг"
         diagonalShift = SIZE - dotsToWin;
     }
 
@@ -203,9 +203,7 @@ public class TicTacToe {
         if (checkHorizontal(symbol)) return true;
         if (checkVertical(symbol)) return true;
         if (CheckDescendingDiagonal(symbol)) return true;
-        if (checkAscendingDiagonal(symbol)) return true;
-
-        return false;
+        return checkAscendingDiagonal(symbol);
     }
 
     private static boolean checkHorizontal(char symbol) {
