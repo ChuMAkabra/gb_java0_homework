@@ -4,7 +4,7 @@ public class Employee {
     private String fullName;
     private String position;
     private String email;
-    private int phone;
+    private long phone;
     private int salary;
     private int age;
 
@@ -26,17 +26,17 @@ public class Employee {
         this.email = email;
     }
 
-    public Employee(String fullName, String position, String email, int phone) {
+    public Employee(String fullName, String position, String email, long phone) {
         this(fullName, position, email);
         this.phone = phone;
     }
 
-    public Employee(String fullName, String position, String email, int phone, int salary) {
+    public Employee(String fullName, String position, String email, long phone, int salary) {
         this(fullName, position, email, phone);
         this.salary = salary;
     }
 
-    public Employee(String fullName, String position, String email, int phone, int salary, int age){
+    public Employee(String fullName, String position, String email, long phone, int salary, int age){
         this(fullName, position, email, phone, salary);
         this.age = age;
     }
@@ -51,5 +51,9 @@ public class Employee {
                 ", salary=" + salary +
                 ", age=" + age +
                 '}';
+    }
+
+    public int getAge() {
+        return age;
     }
 }
