@@ -1,6 +1,7 @@
 package Assignment_06;
 
 public class Main {
+
     public static void main(String[] args) {
         Dog dog1 = new Dog();
         Dog dog2 = new Dog();
@@ -16,7 +17,13 @@ public class Main {
             animal.jump(0.5F);
             animal.jump(2.01F);
         }
-        dog1.swim(10);
-        dog2.swim(11);
+
+        // поскольку плавать умеют только собаки, выполним проверку отдельно
+        Dog[] dogs = new Dog[] {dog1, dog2};
+        for (Dog dog : dogs) {
+            System.out.printf("%s с лимитом в %.2fм\n", dog.getSpecies(), dog.getSwimLimit());
+            dog.swim(10);
+            dog.swim(11);
+        }
     }
 }

@@ -1,7 +1,8 @@
 package Assignment_06;
 
 public class Dog extends Animal implements SwimmingAnimals {
-    private float swimLimit;
+
+    protected float swimLimit;
 
     public Dog () {
         this.species = "Пёс";
