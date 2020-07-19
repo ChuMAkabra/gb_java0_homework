@@ -2,7 +2,7 @@ package Assignment_06;
 
 import java.util.Random;
 
-public class Animal {
+public abstract class Animal {
 
     protected float runLimit;
     protected float jumpLimit;
