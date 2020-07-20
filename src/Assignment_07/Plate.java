@@ -12,7 +12,11 @@ public class Plate {
     }
 
     public void addFood(int food) {
-        this.food += food;
+        if (food > 0) {
+            this.food += food;
+            System.out.println("Добавлено еды: " + food);
+        }
+        else System.out.println("Неужели вы хотите отобрать корм у котеек?");
     }
 
     public void info() {

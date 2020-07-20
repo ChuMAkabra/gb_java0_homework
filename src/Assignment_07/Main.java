@@ -3,16 +3,25 @@ package Assignment_07;
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
-        Cat cat = new Cat("Мартин", 5);
-        Plate plate = new Plate(5);
+        Cat cat1 = new Cat("Мартин", 5);
+        Cat cat2 = new Cat("СкоТсезе", 7);
+        Plate plate = new Plate(6);
 
+        plate.info(); printCat(cat1); printCat(cat2);
+        Thread.sleep(2000); System.out.println();
+        cat1.eat(plate); printCat(cat1); plate.info();
+        Thread.sleep(2000); System.out.println();
+        cat2.eat(plate); printCat(cat2); plate.info();
+        Thread.sleep(2000); System.out.println();
+        plate.addFood(6); plate.info();
+        System.out.println();
+        cat2.eat(plate); printCat(cat2); plate.info();
+        System.out.println();
+        plate.addFood(-11);
         plate.info();
-        cat.eat(plate);
-        Thread.sleep(3000);
-        plate.info();
-        plate.addFood(3);
-        Thread.sleep(3000);
-        plate.info();
+    }
 
+    public static void printCat(Cat cat) {
+        System.out.printf("Кот %s. Аппетит: %d\n", cat.getName(), cat.getAppetite());
     }
 }

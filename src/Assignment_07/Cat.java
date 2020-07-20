@@ -20,17 +20,15 @@ public class Cat {
     }
 
     public void eat (Plate plate) {
-        if (plate.getFood() >= appetite) {
+        int foodLeft = plate.getFood();
+        if (foodLeft >= appetite) {
+            plate.decreaseFood(appetite);
             satiety = true;
-            doEat(plate);
+            appetite = 0;
         }
-        else {
-
+        else if (foodLeft > 0) {
+            plate.decreaseFood(plate.getFood());
+            appetite -= foodLeft;
         }
-
-    }
-
-    public void doEat(Plate plate) {
-        plate.decreaseFood(appetite);
     }
 }
