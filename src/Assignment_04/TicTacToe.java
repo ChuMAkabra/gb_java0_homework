@@ -21,21 +21,23 @@
  * 13. повторение п.6-12
  */
 
-package lesson4;
+package Assignment_04;
 
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
 public class TicTacToe {
 
     public static final int SIZE = 3;
-    public static final int DOTS_TO_WIN = 3;
+    public static int dotsToWin;
 
     public static final char DOT_EMPTY = '•';
     public static final char DOT_HUMAN = 'X';
     public static final char DOT_AI = 'O';
     public static final String EMPTY = " ";
     public static final String FIRST_EMPTY_CHAR = "  ";
+    public static int diagonalShift; // модуль максимального сдвига
 
     public static char[][] map = new char[SIZE][SIZE];
     public static Scanner scanner = new Scanner(System.in);
@@ -53,23 +55,6 @@ public class TicTacToe {
         printMap();
 
         playGame();
-    }
-
-    public static void playGame() {
-        while (true) {
-            humanTurn();
-            printMap();
-            if (checkEnd(DOT_HUMAN, "Вы выиграли!")) {
-                System.exit(0);
-            }
-
-            aiTurn();
-            printMap();
-            if (checkEnd(DOT_AI, "К сожалению, Вы проиграли...")) {
-                System.exit(0);
-            }
-
-        }
     }
 
     public static void initMap() {
@@ -109,16 +94,58 @@ public class TicTacToe {
         System.out.println();
     }
 
+    public static void playGame() {
+
+        if (SIZE >= 3) {
+            defineDotsToWin();
+            defineDiagonalShift();
+        } else {
+            System.out.println("Задайте размер поля не меньше 3");
+            System.exit(0);
+        }
+
+        while (true) {
+            humanTurn();
+            printMap();
+            if (checkEnd(DOT_HUMAN, "Вы выиграли!")) {
+                System.exit(0);
+            }
+
+            aiTurn();
+            printMap();
+            if (checkEnd(DOT_AI, "К сожалению, Вы проиграли...")) {
+                System.exit(0);
+            }
+
+        }
+    }
+
+    public static void defineDotsToWin() {
+        if      (SIZE <=  5) dotsToWin = 3;
+        else if (SIZE <= 10) dotsToWin = 4;
+        else if (SIZE >  10) dotsToWin = 5;
+    }
+
+    public static void defineDiagonalShift() {
+        // достаточно проверять только диагонали, вмещающие победное кол-во полей. Число таких
+        // диагоналей как слева, так и справа от основной диагонали определим как "сдвиг"
+        diagonalShift = SIZE - dotsToWin;
+    }
+
     private static void humanTurn() {
-        int rowNumber, colNumber;
+        int rowNumber = -1, colNumber = -1;
 
         do {
-            System.out.println("Ход пользователя! Введите номера строки и столбца");
-            System.out.print("Строка = ");
-            rowNumber = scanner.nextInt();
-            System.out.print("Столбец = ");
-            colNumber = scanner.nextInt();
-
+            try {
+                System.out.println("Ход пользователя! Введите номера строки и столбца");
+                System.out.print("Строка = ");
+                rowNumber = scanner.nextInt();
+                System.out.print("Столбец = ");
+                colNumber = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Пожалуйста введите числовые значения");
+                scanner.next();
+            }
         } while (!isCellValid(rowNumber, colNumber, DOT_HUMAN));
 
         map[rowNumber - 1][colNumber - 1] = DOT_HUMAN;
@@ -173,16 +200,69 @@ public class TicTacToe {
     }
 
     private static boolean checkWin(char symbol) {
-        if (map[0][0] == symbol && map[0][1] == symbol && map[0][2] == symbol) return true;
-        if (map[1][0] == symbol && map[1][1] == symbol && map[1][2] == symbol) return true;
-        if (map[2][0] == symbol && map[2][1] == symbol && map[2][2] == symbol) return true;
+        if (checkHorizontal(symbol)) return true;
+        if (checkVertical(symbol)) return true;
+        if (checkDescendingDiagonal(symbol)) return true;
+        return checkAscendingDiagonal(symbol);
+    }
 
-        if (map[0][0] == symbol && map[2][0] == symbol && map[2][0] == symbol) return true;
-        if (map[0][1] == symbol && map[1][1] == symbol && map[2][1] == symbol) return true;
-        if (map[0][2] == symbol && map[1][2] == symbol && map[2][2] == symbol) return true;
+    private static boolean checkHorizontal(char symbol) {
+        int dotsInLine = 0;
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                dotsInLine = (map[i][j] == symbol) ? ++dotsInLine : 0;
+                if (dotsInLine == dotsToWin) return true;
 
-        if (map[0][2] == symbol && map[1][1] == symbol && map[2][2] == symbol) return true;
-        if (map[0][2] == symbol && map[1][1] == symbol && map[0][2] == symbol) return true;
+                int dotsToCheck = SIZE - (j + 1);
+                if (dotsToWin > dotsInLine + dotsToCheck) break;
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkVertical(char symbol) {
+        int dotsInLine = 0;
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                dotsInLine = (map[j][i] == symbol) ? ++dotsInLine : 0;
+                if (dotsInLine == dotsToWin) return true;
+
+                int dotsToCheck = SIZE - (j + 1);
+                if (dotsToWin > dotsInLine + dotsToCheck) break;
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkDescendingDiagonal(char symbol) {
+        int dotsInLine = 0;
+        for (int s = -diagonalShift; s <= diagonalShift; s++) {
+            for (int d = 0; d < SIZE; d++) {
+                if (d + s < 0) continue;
+
+                dotsInLine = (map[d][d + s] == symbol) ? ++dotsInLine : 0;
+                if (dotsInLine == dotsToWin) return true;
+
+                int dotsToCheck = SIZE - (d + 1);
+                if (dotsToWin > dotsInLine + dotsToCheck) break;
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkAscendingDiagonal(char symbol) {
+        int dotsInLine = 0;
+        for (int s = diagonalShift; s >= -diagonalShift; s--) {
+            for (int d = SIZE - 1; d >= 0; d--) {
+                if ((SIZE - 1) - d + s < 0) continue;
+
+                dotsInLine = (map[d][(SIZE - 1) - d + s] == symbol) ? ++dotsInLine : 0;
+                if (dotsInLine == dotsToWin) return true;
+
+                int dotsToCheck = d;
+                if (dotsToWin > dotsInLine + dotsToCheck) break;
+            }
+        }
         return false;
     }
 
