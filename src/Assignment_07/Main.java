@@ -2,26 +2,44 @@ package Assignment_07;
 
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
-        Cat cat1 = new Cat("Мартин", 5);
-        Cat cat2 = new Cat("СкоТсезе", 7);
-        Plate plate = new Plate(6);
+    private static FoodObserver obs;
 
-        plate.info(); printCat(cat1); printCat(cat2);
-        Thread.sleep(2000); System.out.println();
-        cat1.eat(plate); printCat(cat1); plate.info();
-        Thread.sleep(2000); System.out.println();
-        cat2.eat(plate); printCat(cat2); plate.info();
-        Thread.sleep(2000); System.out.println();
-        plate.addFood(6); plate.info();
-        System.out.println();
-        cat2.eat(plate); printCat(cat2); plate.info();
-        System.out.println();
-        plate.addFood(-11);
-        plate.info();
+    public static void main(String[] args) {
+        initiateVars();
+        feedCats();
     }
 
-    public static void printCat(Cat cat) {
-        System.out.printf("Кот %s. Аппетит: %d\n", cat.getName(), cat.getAppetite());
+    public static void initiateVars() {
+        obs = new FoodObserver();
+        Cat cat1 = new Cat("Мартин", 5);
+        Cat cat2 = new Cat("СкоТсезе", 7);
+        Cat cat3 = new Cat("Жиробасик", 20);
+        Cat[] cats = new Cat[] {cat1, cat2, cat3};
+
+        Plate plate1 = new Plate(5);
+        Plate plate2 = new Plate(10);
+        Plate plate3 = new Plate(15);
+        Plate[] plates = new Plate[] {plate1, plate2, plate3};
+
+        obs.addCat(cats);
+        obs.addPlate(plates);
+    }
+
+    public static void feedCats() {
+        obs.fillPlates(31);
+        reportInfo();
+        obs.notifyCats();
+        reportInfo();
+        obs.fillPlates(2);
+        obs.notifyCats();
+        reportInfo();
+    }
+
+    public static void reportInfo() {
+        System.out.println();
+        obs.infoCats();
+        System.out.println();
+        obs.infoPlates();
+        System.out.println();
     }
 }

@@ -3,32 +3,39 @@ package Assignment_07;
 public class Cat {
 
     protected final String name;
-    private int appetite;
-    private boolean satiety = false;
+    private int satiety;
+    private final int maxSatiety;
+    private boolean hungry = true;
 
-    public Cat(String name, int appetite) {
+    public Cat(String name, int maxSatiety) {
         this.name = name;
-        this.appetite = appetite;
+        this.maxSatiety = maxSatiety;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public String toString() {
+        return "Кот " +
+                "по имени " + name +
+                ", сыт на " + satiety +
+                "/" + maxSatiety +
+                ", " + ((!hungry) ? "не " : "") + "голоден";
     }
 
-    public int getAppetite() {
-        return appetite;
+    public boolean isHungry() {
+        return hungry;
     }
 
     public void eat (Plate plate) {
         int foodLeft = plate.getFood();
-        if (foodLeft >= appetite) {
-            plate.decreaseFood(appetite);
-            satiety = true;
-            appetite = 0;
+        int hunger = maxSatiety - satiety;
+        if (foodLeft >= hunger) {
+            plate.decreaseFood(hunger);
+            satiety = maxSatiety;
+            hungry = false;
         }
         else if (foodLeft > 0) {
-            plate.decreaseFood(plate.getFood());
-            appetite -= foodLeft;
+            plate.decreaseFood(foodLeft);
+            satiety += foodLeft;
         }
     }
 }
