@@ -4,7 +4,7 @@ public class Plate {
     private int food;
 
     public Plate(int food) {
-        this.food = food;
+        addFood(food);
     }
 
     public Plate() {
@@ -12,11 +12,20 @@ public class Plate {
     }
 
     public void addFood(int food) {
-        if (food > 0) {
+        if (food >= 0) {
             this.food += food;
             System.out.println("Добавлено еды: " + food);
         }
-        else System.out.println("Неужели вы хотите отобрать корм у котеек?");
+        else System.out.println("Неужели вы хотите отобрать корм у котеек? " +
+                "Кол-во корма останется неизменным");
+    }
+
+    public void decreaseFood(int foodCount) {
+        this.food -= foodCount;
+    }
+
+    public int getFood() {
+        return food;
     }
 
     public void info() {
@@ -28,13 +37,5 @@ public class Plate {
         return "Plate{" +
                 "food=" + food +
                 '}';
-    }
-
-    public int getFood() {
-        return food;
-    }
-
-    public void decreaseFood(int foodCount) {
-        this.food -= foodCount;
     }
 }
