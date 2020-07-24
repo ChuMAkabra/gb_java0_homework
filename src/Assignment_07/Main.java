@@ -13,7 +13,7 @@ public class Main {
         obs = new FoodObserver();
         Cat cat1 = new Cat("Мартин", 5);
         Cat cat2 = new Cat("СкоТсезе", 7);
-        Cat cat3 = new Cat("Жиробасик", 20);
+        Cat cat3 = new Cat("ЖироБарсик", 20);
         Cat[] cats = new Cat[] {cat1, cat2, cat3};
 
         Plate plate1 = new Plate(5);
